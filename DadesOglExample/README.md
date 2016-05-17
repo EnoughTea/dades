@@ -1,0 +1,1 @@
+﻿Press keyboard arrows Up and Down to change texture type, press Left and Right to change textures.
