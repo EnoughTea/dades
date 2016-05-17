@@ -13,8 +13,8 @@ There is also an OpenGL example which shows what to do with read pixel data.
 ## Are there any existing solutions for DDS reading? ##
 
 - OpenTK example DDS loader cannot deal with partial cubemaps and formats other than DXT1-5.
-- DevIL .NET Wrapper can only deal with flat textures.
-- DDSLib requires XNA.
+- DevIL .NET Wrapper can only deal with flat textures and doesn't parallelize well.
+- DDSLib supports a fair amount of formats, but requires XNA.
 
 There must be a better loader in a C++ world, if you are into wrappers and interop.
 
@@ -68,7 +68,7 @@ Note that some of the generated images are marked as *empty*: they contain a cor
 ### Cube-maps ###
 
 Cubemaps were generated with [AMD's cubemap generator](http://code.google.com/p/cubemapgen/).
-Image data came as a result of a Google image search, I have no idea if it belongs to anyone or not.
+Image data came as a result of a Google image search without any copyright info, I have no idea if it belongs to anyone or not.
 
 ### Volume textures ###
 
