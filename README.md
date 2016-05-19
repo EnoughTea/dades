@@ -57,7 +57,7 @@ For a more complete example showcasing OpenGL loading take a look at the *DadesO
 
 # Credits #
 
-Thanks to [Racer](http://www.racer.nl/tech/dds.htm) (a free car simulator project) for BC1-3 block flipping code :)
+Thanks to [Racer](http://www.racer.nl/tech/dds.htm) (a free car simulator project) for BC1-3 block flipping code idea :)
 
 ## Where all of the example textures came from ##
 

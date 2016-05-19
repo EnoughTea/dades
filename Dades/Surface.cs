@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace Dades
 {
-    /// <summary> Holds surface info and pixel data. </summary>
+    /// <summary> Holds surface info and actual pixel data. </summary>
     public class Surface
     {
         /// <summary> Initializes a new instance of the <see cref="Surface" /> class. </summary>

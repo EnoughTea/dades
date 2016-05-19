@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 namespace Dades
 {
-    /// <summary> Represents a single texture of any kind. </summary>
+    /// <summary> Represents a single texture of any kind, which consists of [1, N) surfaces. </summary>
     public class TextureResource : IEnumerable<Surface>
     {
         /// <summary> Initializes a new instance of the <see cref="TextureResource" /> class. </summary>
@@ -16,7 +16,8 @@ namespace Dades
             Surfaces = surfaces;
         }
 
-        /// <summary> Gets all surfaces of this texture. </summary>
+        /// <summary> Gets surfaces for this texture.
+        /// Keep in mind that is not necessary for a DDS file to provide all mipmap levels of a texture. </summary>
         /// <remarks>
         ///     It specifically exposes <see cref="List{Surface}" /> instead of usual IEnumerable to remind
         ///     that it is possible to tinker with surfaces and their data.
