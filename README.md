@@ -2,6 +2,8 @@
 
 Simple managed reader for a DDS format, created with both DirectX and OpenGL in mind.
 
+![DDS file shown with OpenGL](shot-1.png)
+
 
 ## What does it do? ##
 
