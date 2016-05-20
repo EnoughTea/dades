@@ -133,16 +133,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="D3DFormat.cs" />
-    <Compile Include="DDS Headers\D3D10_RESOURCE_DIMENSION.cs" />
-    <Compile Include="DDS Headers\D3D10_RESOURCE_MISC_FLAG.cs" />
-    <Compile Include="DDS Headers\DDS_CAPS.cs" />
-    <Compile Include="DDS Headers\DDS_CAPS2.cs" />
-    <Compile Include="DDS Headers\DDS_FLAGS.cs" />
-    <Compile Include="DDS Headers\DDS_HEADER.cs" />
-    <Compile Include="DDS Headers\DDS_HEADER_DXT10.cs" />
-    <Compile Include="DDS Headers\DDS_PIXELFORMAT.cs" />
-    <Compile Include="DDS Headers\DDS_PIXELFORMAT_FLAGS.cs" />
-    <Compile Include="DDS Headers\FOURCC.cs" />
+    <Compile Include="DDS Internals\D3D10_RESOURCE_DIMENSION.cs" />
+    <Compile Include="DDS Internals\D3D10_RESOURCE_MISC_FLAG.cs" />
+    <Compile Include="DDS Internals\DDS_CAPS.cs" />
+    <Compile Include="DDS Internals\DDS_CAPS2.cs" />
+    <Compile Include="DDS Internals\DDS_FLAGS.cs" />
+    <Compile Include="DDS Internals\DDS_HEADER.cs" />
+    <Compile Include="DDS Internals\DDS_HEADER_DXT10.cs" />
+    <Compile Include="DDS Internals\DDS_PIXELFORMAT.cs" />
+    <Compile Include="DDS Internals\DDS_PIXELFORMAT_FLAGS.cs" />
+    <Compile Include="DDS Internals\FOURCC.cs" />
     <Compile Include="DdsException.cs" />
     <Compile Include="DdsFileData.cs" />
     <Compile Include="DdsTools.cs" />
