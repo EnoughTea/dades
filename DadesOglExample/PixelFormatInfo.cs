@@ -72,8 +72,8 @@ namespace DadesOglExample
                     break;
 
                 case DxgiFormat.A8_UNorm:
-                    InternalFormat = PixelInternalFormat.R8;
-                    Format = PixelFormat.Red;
+                    InternalFormat = PixelInternalFormat.Alpha8;
+                    Format = PixelFormat.Alpha;
                     Type = PixelType.UnsignedByte;
                     break;
 

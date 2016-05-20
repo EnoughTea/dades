@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
 namespace Dades
@@ -52,15 +53,16 @@ namespace Dades
         /// </param>
         /// <param name="vFlip">true if surface should be flipped vertically, useful for OpenGL.</param>
         /// <returns>Created surface.</returns>
-        public static Surface MakeSurface(byte[] rawData, SurfaceType surfaceType, int level, int width, int height,
-                                          D3DFormat formatD3D, DxgiFormat formatDxgi, bool vFlip)
+        /// <exception cref="NotSupportedException">Packed format is currently untested with vertical flip.</exception>
+        public static Surface FromBytes(byte[] rawData, SurfaceType surfaceType, int level, int width, int height,
+                                        D3DFormat formatD3D, DxgiFormat formatDxgi, bool vFlip)
         {
             Debug.Assert(rawData.Length > 0); // This should never happen if pitch and linear size are correct.
 
-            var bitsPerPixel = DdsTools.GetBitsPerPixel(formatD3D, formatDxgi);
+            int bitsPerPixel = DdsTools.GetBitsPerPixel(formatD3D, formatDxgi);
 
             // Flip block-compressed formats:
-            if (DdsTools.IsFormatBlockCompressed(formatD3D) || DdsTools.IsFormatBlockCompressed(formatDxgi)) {
+            if (DdsTools.IsBlockCompressedFormat(formatD3D) || DdsTools.IsBlockCompressedFormat(formatDxgi)) {
                 if (vFlip && width > 2 && height > 2) {
                     // Every D3D BC format can be converted to its DXGI BC representation:
                     Debug.Assert(formatDxgi != DxgiFormat.Unknown);
@@ -68,16 +70,17 @@ namespace Dades
                 }
             }
             else if (vFlip) {
-                // Flip other formats. For now don't care about obscure compressed formats:
-                var bytes = bitsPerPixel / 8;
+                // Flip other formats.
+                // TODO: Test this naive flipping with obscure packed formats.
+                int bytes = bitsPerPixel / 8;
                 for (var sourceColumn = 0; sourceColumn < height / 2; sourceColumn++) {
-                    var targetColumn = height - sourceColumn - 1;
+                    int targetColumn = height - sourceColumn - 1;
                     for (var row = 0; row < width; row++) {
-                        var source = (sourceColumn * width + row) * bytes;
-                        var target = (targetColumn * width + row) * bytes;
+                        int source = (sourceColumn * width + row) * bytes;
+                        int target = (targetColumn * width + row) * bytes;
 
                         for (var i = 0; i < bytes; i++) {
-                            var temp = rawData[source + i];
+                            byte temp = rawData[source + i];
                             rawData[source + i] = rawData[target + i];
                             rawData[target + i] = temp;
                         }

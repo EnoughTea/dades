@@ -224,7 +224,7 @@ namespace Dades
                     throw new DdsException("DDS texture is in an unknown format.");
                 }
 
-                FormatDxgi = DdsTools.MapD3DToDxgi(FormatD3D);
+                FormatDxgi = DdsTools.D3DToDxgiFormat(FormatD3D);
                 BitsPerPixel = DdsTools.GetBitsPerPixel(FormatD3D);
             }
             else {
@@ -241,7 +241,7 @@ namespace Dades
             for (var i = 0; i < _resourceCount; i++) {
                 // Flat textures contain only mip-map levels, so read them:
                 var surfaces = ReadMipMapSurfaces(reader, surfaceCount, textureType, Width, Height);
-                Textures.Add(new TextureResource(surfaces.ToList()));
+                Textures.Add(new TextureResource(surfaces.ToArray()));
             }
         }
 
@@ -254,7 +254,7 @@ namespace Dades
                 // Volume textures contain slices first, mip levels for them later.
                 // So for every mip-map level load all its slices:
                 var surfaces = ReadMipMapSurfaces(reader, surfaceCount, SurfaceType.Texture3D, Width, Height, Depth);
-                Textures.Add(new TextureResource(surfaces.ToList()));
+                Textures.Add(new TextureResource(surfaces.ToArray()));
             }
         }
 
@@ -278,7 +278,7 @@ namespace Dades
                     surfaces.AddRange(ReadMipMapSurfaces(reader, surfaceCount, faceType, Width, Height));
                 }
 
-                Textures.Add(new TextureResource(surfaces));
+                Textures.Add(new TextureResource(surfaces.ToArray()));
             }
         }
 
@@ -299,7 +299,7 @@ namespace Dades
                 TotalResourceSize += surfaceSize;
 
                 var data = reader.ReadBytes(surfaceSize);
-                yield return Surface.MakeSurface(data, surfaceType, level, width, height, FormatD3D, FormatDxgi,
+                yield return Surface.FromBytes(data, surfaceType, level, width, height, FormatD3D, FormatDxgi,
                     _vFlip);
 
                 width /= 2;

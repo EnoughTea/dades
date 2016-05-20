@@ -16,22 +16,24 @@ There is also an OpenGL example which shows what to do with read pixel data.
 - DevIL .NET Wrapper can only deal with flat textures and doesn't parallelize well.
 - DDSLib supports a fair amount of formats, but requires XNA.
 
-There must be a better loader in a C++ world, if you are into wrappers and interop.
+There could be a better DDS loader in a C++ world, if you are into wrappers and interop.
 
 ## Pros: ##
 
+- No need for XNA or unmanaged code.
 - Supports all texture types — regular flat textures, volume textures and cube-maps with 1–6 faces — and their arrays.
-- Supports a lot of formats.
-- Deals with DDS reading mostly, so its pretty easy to use.
-- Can do optional vertical flipping for OpenGL convenience.
+- Supports **a lot** of formats.
+- Deals with DDS reading mostly, so its pretty easy to learn and use, just write 1 line of code to read a DDS file.
+- Can do optional vertical flipping for OpenGL convenience, in case you don't want to flip UVs for some reason.
 - I prepared a short but comprehensive example of loading all texture types to OpenGL via OpenTK.
 
 
 ## Cons: ##
 
 - Cannot write DDS files.
-- Cannot load DDS data into a standard GDI+ Bitmap class, but should be pretty straightforward for "usual" formats. See *DadesOglExample/PixelFormatInfo.cs* for inspiration.
-- I was too lazy to do proper TDD, beware of bugs; also there is a possibility of bugs on big-endian systems.
+- Cannot load DDS data into a standard GDI+ Bitmap class, but it should be straightforward to implement, at least for most formats. 
+Check *DadesOglExample/PixelFormatInfo.cs* to see how DX formats correspond to usual pixel formats.
+- I was too lazy to do proper TDD; also no guarantees for big-endian systems, needs testing.
 
 
 ## Usage ##

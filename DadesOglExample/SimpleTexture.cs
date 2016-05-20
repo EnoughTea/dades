@@ -77,7 +77,7 @@ namespace DadesOglExample
             if (Kind == TextureKind.Flat || Kind == TextureKind.Cubemap) // Load flat textures and cube-maps:
             {
                 // Simply read all surfaces, they already have correct layout:
-                foreach (var surface in dds.Textures[0]) {
+                foreach (var surface in dds.Textures[0].Surfaces) {
                     // If this is a cube map, find which cube map face we have to load:
                     var casted = (Kind == TextureKind.Cubemap) ? (TextureTarget) surface.Type : _target;
                     if (dds.IsBlockCompressed) // Indicates that this is one of BC formats.
@@ -93,16 +93,16 @@ namespace DadesOglExample
             }
             else if (Kind == TextureKind.Volume) // Load volume textures:
             {
-                // Each 'slices' is a single mip level of slices in a volume texture.
-                foreach (var slices in dds.Textures[0]) {
+                // Each 'slice' is a single mip level of slices in a volume texture.
+                foreach (var slice in dds.Textures[0].Surfaces) {
                     if (dds.IsBlockCompressed) // Indicates that this is one of BC formats.
                     {
-                        GL.CompressedTexImage3D(_target, slices.Level, format.InternalFormat, dds.Width,
-                                                dds.Height, dds.Depth, 0, slices.Data.Length, slices.Data);
+                        GL.CompressedTexImage3D(_target, slice.Level, format.InternalFormat, dds.Width,
+                                                dds.Height, dds.Depth, 0, slice.Data.Length, slice.Data);
                     }
                     else {
-                        GL.TexImage3D(_target, slices.Level, format.InternalFormat, dds.Width, dds.Height,
-                                      dds.Depth, 0, format.Format, format.Type, slices.Data);
+                        GL.TexImage3D(_target, slice.Level, format.InternalFormat, dds.Width, dds.Height,
+                                      dds.Depth, 0, format.Format, format.Type, slice.Data);
                     }
                 }
             }

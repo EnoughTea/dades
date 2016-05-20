@@ -30,7 +30,7 @@ namespace Dades
             // can supply incorrect value for this field from time to time.
 
             var bitsPerPixel = GetBitsPerPixel(formatD3D, formatDxgi);
-            if (IsFormatBlockCompressed(formatD3D) || IsFormatBlockCompressed(formatDxgi)) {
+            if (IsBlockCompressedFormat(formatD3D) || IsBlockCompressedFormat(formatDxgi)) {
                 return ComputeBCLinearSize(width, height, bitsPerPixel * 2);
             }
 
@@ -40,9 +40,10 @@ namespace Dades
                 return ((width + 1) >> 1) * 4 * height;
             }
 
-            // ... but if it is some other packed format, then let's trust dwPitch, since I don't know any better:
-            if (IsFormatPacked(formatDxgi)) {
-                return defaultPitchOrLinearSize * height;
+            // ... but if it is some other packed format, then let's trust dwPitch.
+            // In theory it may break for some packed format, but I don't have time to test all those formats:
+            if (IsPackedFormat(formatDxgi)) {
+                return defaultPitchOrLinearSize * height;   // TODO: Check how some obscure packed formats work with it.
             }
 
             // If we're here, it must be a generic uncompressed format.
@@ -72,7 +73,7 @@ namespace Dades
             // can supply incorrect value for this field from time to time.
 
             var bitsPerPixel = GetBitsPerPixel(formatD3D, formatDxgi);
-            if (IsFormatBlockCompressed(formatD3D) || IsFormatBlockCompressed(formatDxgi)) {
+            if (IsBlockCompressedFormat(formatD3D) || IsBlockCompressedFormat(formatDxgi)) {
                 return ComputeBCPitch(dimension, bitsPerPixel * 2);
             }
 
@@ -82,9 +83,10 @@ namespace Dades
                 return Math.Max(1, ((dimension + 1) >> 1)) * 4;
             }
 
-            // ... but if it is some other packed format, then let's trust dwPitch, since I don't know any better:
-            if (IsFormatPacked(formatDxgi)) {
-                return defaultPitchOrLinearSize;
+            // ... but if it is some other packed format, then let's trust dwPitch.
+            // In theory it may break for some packed format, but I don't have time to test all those formats:
+            if (IsPackedFormat(formatDxgi)) {
+                return defaultPitchOrLinearSize;    // TODO: Check how some obscure packed formats work with it.
             }
 
             // If we're here, it must be a generic uncompressed format.
@@ -364,7 +366,7 @@ namespace Dades
         ///     otherwise, <c>false</c>.
         /// </returns>
         [Pure]
-        public static bool IsFormatBlockCompressed(DxgiFormat format)
+        public static bool IsBlockCompressedFormat(DxgiFormat format)
         {
             switch (format) {
                 case DxgiFormat.BC1_Typeless:
@@ -404,18 +406,30 @@ namespace Dades
         ///     otherwise, <c>false</c>.
         /// </returns>
         [Pure]
-        public static bool IsFormatBlockCompressed(D3DFormat format)
+        public static bool IsBlockCompressedFormat(D3DFormat format)
         {
-            return (format == D3DFormat.DXT1 || format == D3DFormat.DXT2 || format == D3DFormat.DXT3 ||
-                    format == D3DFormat.DXT4 || format == D3DFormat.DXT5 || format == D3DFormat.BC4U ||
-                    format == D3DFormat.BC4S || format == D3DFormat.BC5S || format == D3DFormat.BC5U);
+            switch (format) {
+                case D3DFormat.DXT1:
+                case D3DFormat.DXT2:
+                case D3DFormat.DXT3:
+                case D3DFormat.DXT4:
+                case D3DFormat.DXT5:
+                case D3DFormat.BC4U:
+                case D3DFormat.BC4S:
+                case D3DFormat.BC5S:
+                case D3DFormat.BC5U:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
-        /// <summary> Determines whether the specified format is one of the packed formats. </summary>
+        /// <summary> Determines whether the specified format is one of the packed formats.
+        ///  Note that 'packed' doesn't mean block-compressed. </summary>
         /// <param name="format">The format to test.</param>
         /// <returns> <c>true</c> if the specified format is packed; otherwise, <c>false</c>. </returns>
         [Pure]
-        public static bool IsFormatPacked(DxgiFormat format)
+        public static bool IsPackedFormat(DxgiFormat format)
         {
             switch (format) {
                 case DxgiFormat.YUY2:
@@ -444,7 +458,7 @@ namespace Dades
         /// <param name="format">The format to map.</param>
         /// <returns> DXGI format corresponding to the specified D3D format. </returns>
         [Pure]
-        public static DxgiFormat MapD3DToDxgi(D3DFormat format)
+        public static DxgiFormat D3DToDxgiFormat(D3DFormat format)
         {
             switch (format) {
                 case D3DFormat.A8:
@@ -578,7 +592,7 @@ namespace Dades
         internal static void FlipBCSurface(byte[] surfaceData, int width, int height, int bytesPerBlock,
                                            DxgiFormat format)
         {
-            Contract.Requires(IsFormatBlockCompressed(format));
+            Contract.Requires(IsBlockCompressedFormat(format));
 
             var blocksPerRow = Math.Max(1, (width + 3) / 4);
             var blocksPerCol = Math.Max(1, (height + 3) / 4);
@@ -774,8 +788,8 @@ namespace Dades
                 try {
                     result = GetBitsPerPixel(formatDxgi);
                 }
-                catch (ArgumentException) {
-                    throw new ArgumentException("Both formats were unknown.");
+                catch (ArgumentException e) {
+                    throw new ArgumentException("Both formats were unknown.", e);
                 }
             }
 
