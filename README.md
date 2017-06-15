@@ -63,19 +63,20 @@ For a more complete example showcasing OpenGL loading take a look at the *DadesO
 
 Thanks to [Racer](http://www.racer.nl/tech/dds.htm) (a free car simulator project) for BC1-3 block flipping code idea :)
 
-## Where all of the example textures came from ##
+### Where all of the example textures came from ##
 
-### Flat textures ###
+#### Flat textures ###
 
 All wose_*.dss were generated with **texconv** tool from [DirectXTex project](http://directxtex.codeplex.com/)
-These images use a sprite of *Wose* from the great game "[Battle for Wesnoth](http://http://wesnoth.org/)". Give it a try sometimes.
+These images use a sprite of *Wose* from the great game "[Battle for Wesnoth](http://wesnoth.org/)". Give it a try sometimes.
+
 Note that some of the generated images are marked as *empty*: they contain a correct header for their format, but no pixel data.
 
-### Cube-maps ###
+#### Cube-maps ###
 
 Cubemaps were generated with [AMD's cubemap generator](http://code.google.com/p/cubemapgen/).
 Image data came as a result of a Google image search without any copyright info, I have no idea if it belongs to anyone or not.
 
-### Volume textures ###
+#### Volume textures ###
 
 Noise3D.dds is a standard noise texture from DirectX SDK.
